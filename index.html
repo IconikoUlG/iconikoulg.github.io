@@ -1,35 +1,104 @@
-#credit to UltroGhast, @mcultroghast on fiverr, 'ultroghast' on discord
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UltroGhast - Minecraft Developer</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #313131;
+      color: #f0f0f0;
+      line-height: 1.6;
+    }
+    .background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('background.png') no-repeat center center fixed;
+  background-size: cover;
+  filter: brightness(0.6) blur(2px); /* adjust as needed */
+  z-index: -1;
+}
 
-Consider taxes on fiverr, multiplying total for 1.25
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      background: linear-gradient(145deg, #2c2c3f, #1a1a2a);
+      color: #ffffff;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .discord-btn {
+      display: block;
+      width: 100%;
+      max-width: 500px;
+      margin: 2rem auto;
+      text-align: center;
+      background: linear-gradient(145deg, #7289da, #4e5d94);
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #2a2a40;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+    <div class="background-layer"></div>
 
-OLD LINE (resell for 40€ each)
-(20€) custom-spawners = 1.16.5       	https://youtu.be/Omep_2zdQ0U
-(20€) cursedfoodmod = 1.16.5		https://youtu.be/AvFUrkjHkUk
-(30€) crazybamboo = 1.17             	https://youtu.be/taVl73PZ7BE
-ultroghast-blocks-mod = 1.18   		https://youtu.be/XtXKsok0ZgA
-die-is-op = 1.18.2             		https://www.youtube.com/watch?v=Qc815u06imQ&t=418s&ab_channel=Craftee
-combinating-two = 1.18.2       		https://youtu.be/_uQwIHlqyxo
-evolving-items = 1.18.2		 	https://youtu.be/OpySRioyqgs
-minemobs = 1.18.2			https://www.youtube.com/watch?v=0kaIWrjgj4c&t=552s&ab_channel=Craftee
+  <header>
+    <h1>UltroGhast – Minecraft Modding & Web Development</h1>
+    <p>Crafting Minecraft datapacks, mods, and web tools since 2019.</p>
+  </header>
 
-MIDDLE (resell for 60€)
-milking-mod - 1.19.2		 https://youtu.be/LIZjwZfccO0
-throwable - 1.19.2		 https://youtu.be/SwxVyTCClBE
-customchests - 1.19.2		 https://www.youtube.com/watch?v=qrJc_ovNykc&t=220s&ab_channel=Graser
-custom-arrows - 1.19.3		 https://youtu.be/LMrRCZljz2k
-custom-armors - 1.19.3		 https://youtu.be/E5gs7M7ZYU0
-mixing-items - 1.19.3		 https://youtu.be/B-N6niWbYO0
+  <nav>
+    <a class="btn" href="content-list.html">List of content on sale</a>
+    <a class="btn" href="https://www.fiverr.com/mcultroghast/create-you-a-datapack-7618" target="_blank">Fiverr: custom commissions</a>
+    <a class="btn" href="https://www.planetminecraft.com/member/ultroghast/" target="_blank">PMC: Public Content</a>
+  </nav>
 
-NEWEST LINE (resell for 80€ each)
-open-anything - 1.19.3		 	https://youtu.be/BMOplJwzYas
-tntshop - 1.19.3			https://www.youtube.com/watch?v=gjRJnDqZNJY
-(90€) deadlyshop - 1.19.4		https://youtu.be/qtHR0vvo5Qw
-pickshop - 1.19.4			https://youtu.be/imkJnmLiUVQ
-enterblock - 1.19.4		 	https://youtu.be/CGU4beS4Hv0
-swordshop - 1.19.4			https://www.youtube.com/watch?v=VNRWCetSaYM
+  <a class="btn discord-btn" href="https://discord.com/users/ultroghast" target="_blank">Join me on Discord (@ultroghast)</a>
 
-more:
-custom-portals-map - 1.16.5      https://youtu.be/os0NZ6OwGlQ
-custom-tnts-datapack             https://youtu.be/-donXg8HpGY
-mobarmor-raw - 1.19.2 		 https://www.youtube.com/watch?v=FBk24_IeUWs&list=PLcx0zw95sypGPGfPpX0bIc8vwsogxxHxZ&index=29 ?
-placingshop (Aborted Project)		https://youtu.be/odF04MieqFc?si=la2YyNthUwlDgeQI
+  <main>
+    <p><strong>UltroGhast</strong> is the online alias of Nicolò Coratella, a datapack/mod developer and web programmer from Puglia (Italy).
+        Since 2019, he has delivered high-quality Minecraft datapacks and mods tailored to YouTubers, communities, and custom commissions worldwide.</p>
+
+    <p>With a background in both Java and mcfunction development, UltroGhast has been a recognized member of the <strong>Minecraft Datapack International</strong> community and promoter of Datapack use and development in their country (Italy) teaching the datapacking art.</p>
+  </main>
+</body>
+</html>
