@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mod Video Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 2rem;
+    }
+    h2 {
+      text-transform: capitalize;
+    }
+    .line-section {
+      margin-bottom: 3rem;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      transition: transform 0.2s;
+      position: relative;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .thumbnail {
+      width: 100%;
+      border-radius: 6px;
+    }
+    .info {
+      margin-top: 0.5rem;
+    }
+    .info p {
+      margin: 0.3rem 0;
+      font-size: 0.9rem;
+    }
+    .info a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+    .info a:hover {
+      text-decoration: underline;
+    }
+    .flag-container {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      flex-direction: row-reverse;
+      gap: 4px;
+      z-index: 1;
+    }
+    .flag {
+      background-color: rgb(55, 51, 51);
+      color: rgb(255, 255, 255);
+      font-size: 0.9rem;
+      padding: 3px 7px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .flag-og {
+      background-color: gold;
+      color: black;
+    }
+    .flag-pop {
+      background-color: rgb(255, 0, 221);
+      color: black;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 0;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: black;
+    }
+    .center-text {
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <p class="center-text">Discounts may be applied on big orders. Taxes not included.
+    <br>
+    Contact <a href="https://discord.com/users/ultroghast">@ultroghast</a> on discord for additional info.
+  </p>
+
+  <div id="content"></div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <iframe id="modalIframe" src="" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
+    const lineOrder = ["old-line", "middle-line", "modern-line"];
+
+    const mods = [
+      { price: 20, id: "custom-spawners", mc: "1.16.5", name: "custom-spawners", url: "https://youtu.be/Omep_2zdQ0U", line: "old-line" },
+      { price: 20, id: "cursedfoodmod", mc: "1.16.5", name: "cursedfoodmod", url: "https://youtu.be/AvFUrkjHkUk", line: "old-line" },
+      { price: 30, id: "crazybamboo", mc: "1.17", name: "crazybamboo", url: "https://youtu.be/taVl73PZ7BE", line: "old-line", flags: [ {content: "Original Idea", tag: "flag-og" } ] },
+      { price: 40, id: "ultroghast-blocks-mod", mc: "1.18", name: "ultroghast-blocks-mod", url: "https://youtu.be/XtXKsok0ZgA", line: "old-line" },
+      { price: 40, id: "die-is-op", mc: "1.18.2", name: "die-is-op", url: "https://www.youtube.com/watch?v=Qc815u06imQ&t=418s&ab_channel=Craftee", line: "old-line" },
+      { price: 40, id: "combinating-two", mc: "1.18.2", name: "combinating-two", url: "https://youtu.be/_uQwIHlqyxo", line: "old-line", infoHtml: "mod_info/combinating-two.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: 40, id: "evolving-items", mc: "1.18.2", name: "evolving-items", url: "https://youtu.be/OpySRioyqgs", line: "old-line", infoHtml: "mod_info/evolving_items.html" },
+      { price: 40, id: "minemobs", mc: "1.18.2", name: "minemobs", url: "https://www.youtube.com/watch?v=0kaIWrjgj4c&t=552s&ab_channel=Craftee", line: "old-line", infoHtml: "mod_info/minemobs.html" },
+
+      { price: 60, id: "milking-mod", mc: "1.19.2", name: "milking-mod", url: "https://youtu.be/LIZjwZfccO0", line: "middle-line" },
+      { price: 60, id: "throwable", mc: "1.19.2", name: "throwable", url: "https://youtu.be/SwxVyTCClBE", line: "middle-line", flags: [ {content: "Popular", tag: "flag-pop" } ], infoHtml: "mod_info/throwable.html" },
+      { price: 60, id: "customchests", mc: "1.19.2", name: "customchests", url: "https://www.youtube.com/watch?v=qrJc_ovNykc&t=220s&ab_channel=Graser", line: "middle-line" },
+      { price: 60, id: "custom-arrows", mc: "1.19.3", name: "custom-arrows", url: "https://youtu.be/LMrRCZljz2k", line: "middle-line", infoHtml: "mod_info/custom_arrows.html" },
+      { price: 60, id: "custom-armors", mc: "1.19.3", name: "custom-armors", url: "https://youtu.be/E5gs7M7ZYU0", line: "middle-line", infoHtml: "mod_info/carmors.html" },
+      { price: 60, id: "mixing-items", mc: "1.19.3", name: "mixing-items", url: "https://youtu.be/B-N6niWbYO0", line: "middle-line" },
+
+      { price: 80, id: "open-anything", mc: "1.19.3", name: "open-anything", url: "https://youtu.be/BMOplJwzYas", line: "modern-line", infoHtml: "mod_info/open-anything.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: 80, id: "tntshop", mc: "1.19.3", name: "tntshop", url: "https://www.youtube.com/watch?v=gjRJnDqZNJY", line: "modern-line", infoHtml: "mod_info/tntshop.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: 90, id: "deadlyshop", mc: "1.19.4", name: "deadlyshop", url: "https://youtu.be/qtHR0vvo5Qw", line: "modern-line", infoHtml: "mod_info/deadlyshop.html", flags: [ {content: "Really Popular", tag: "flag-pop" } ] },
+      { price: 80, id: "pickshop", mc: "1.19.4", name: "pickshop", url: "https://youtu.be/imkJnmLiUVQ", line: "modern-line", infoHtml: "mod_info/pickshop.html" },
+      { price: 80, id: "enterblock", mc: "1.19.4", name: "enterblock", url: "https://youtu.be/CGU4beS4Hv0", line: "modern-line" },
+      { price: 80, id: "swordshop", mc: "1.19.4", name: "swordshop", url: "https://www.youtube.com/watch?v=VNRWCetSaYM", line: "modern-line", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+    ];
+
+    function getThumbnail(url) {
+      const idMatch = url.match(/(?:v=|\.be\/|embed\/)([\w-]{11})/);
+      return idMatch ? `https://img.youtube.com/vi/${idMatch[1]}/0.jpg` : "";
+    }
+
+    const content = document.getElementById("content");
+    lineOrder.forEach(lineId => {
+      const lineMods = mods.filter(m => m.line === lineId);
+      const section = document.createElement("section");
+      section.className = "line-section";
+
+      const title = document.createElement("h2");
+      title.textContent = lineId.replace("-", " ");
+      section.appendChild(title);
+
+      const cards = document.createElement("div");
+      cards.className = "cards";
+
+      lineMods.forEach(mod => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        if (mod.flags) {
+          const flagContainer = document.createElement("div");
+          flagContainer.className = "flag-container";
+          mod.flags.forEach(flag => {
+            const flagEl = document.createElement("div");
+            flagEl.className = "flag "+(flag.tag?flag.tag:'');
+            flagEl.style = flag.style ?? "";
+            flagEl.textContent = flag.content;
+            flagContainer.appendChild(flagEl);
+          });
+          card.appendChild(flagContainer);
+        }
+
+        const thumb = document.createElement("img");
+        thumb.src = getThumbnail(mod.url);
+        thumb.alt = mod.name;
+        thumb.className = "thumbnail";
+
+        const info = document.createElement("div");
+        info.className = "info";
+        info.innerHTML = `
+          <p><strong>${mod.name}</strong></p>
+          <p>MC Version: Fabric ${mod.mc}</p>
+          <p>Price: €${mod.price}</p>
+          <a href="${mod.url}" target="_blank">Watch og content video</a>
+        `;
+
+        card.appendChild(thumb);
+        card.appendChild(info);
+        cards.appendChild(card);
+
+        if (mod.infoHtml) {
+          card.style.cursor = "pointer";
+          card.addEventListener("click", e => {
+            if (!e.target.closest("a")) {
+              document.getElementById("modalIframe").src = mod.infoHtml;
+              document.getElementById("modal").style.display = "block";
+            }
+          });
+        }
+      });
+
+      section.appendChild(cards);
+      content.appendChild(section);
+    });
+
+    document.getElementById("closeModal").onclick = function () {
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("modalIframe").src = "";
+    };
+    window.onclick = function (event) {
+      if (event.target === document.getElementById("modal")) {
+        document.getElementById("modal").style.display = "none";
+        document.getElementById("modalIframe").src = "";
+      }
+    };
+  </script>
+</body>
+</html>

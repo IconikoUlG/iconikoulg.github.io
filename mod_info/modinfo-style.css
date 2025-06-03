@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 24px 20px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fff;
+    color: #222;
+    font-size: 1rem;
+    line-height: 1.6;
+    box-sizing: border-box;
+    min-width: 250px;
+    max-width: 420px;
+}
+p {
+    margin-bottom: 1.1em;
+}
+a {
+    color: #2563eb;
+    text-decoration: underline;
+    word-break: break-all;
+}
+strong {
+    color: #1e293b;
+}
+kbd {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.95em;
+    font-family: 'Consolas', 'Menlo', monospace;
+    color: #374151;
+}
+@media (max-width: 500px) {
+    body {
+        padding: 14px 6px;
+        font-size: 0.97rem;
+    }
+}
