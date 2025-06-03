@@ -76,6 +76,10 @@
       background-color: rgb(255, 0, 221);
       color: black;
     }
+    .flag-chosen {
+      background-color: #00cc3d;
+      color: black;
+    }
     .modal {
       display: none;
       position: fixed;
@@ -136,35 +140,57 @@
   </div>
 
   <script>
-    const lineOrder = ["tycoons", "old-line", "middle-line", "modern-line"];
+    let lineOrder = ["tycoons", "old-line", "middle-line", "modern-line", "chosen"];
+    function getArrayParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      const value = params.get(param);
+      if (!value) return [];
+      return value.split(',').map(v => v.trim()).filter(Boolean);
+    }
+    let arr = getArrayParam('show');
+    if (arr && arr.length > 0) {
+      let tOrder = [];
+      for (let idx = 0; idx < arr.length; idx++) {
+        tOrder.push(lineOrder[arr[idx]]);
+      }
+      lineOrder = tOrder;
+    }
+    console.log(lineOrder);
 
     const mods = [
-      { price: 20, id: "custom-spawners", mc: "1.16.5", name: "custom-spawners", url: "https://youtu.be/Omep_2zdQ0U", line: "old-line" },
-      { price: 20, id: "cursedfoodmod", mc: "1.16.5", name: "cursedfoodmod", url: "https://youtu.be/AvFUrkjHkUk", line: "old-line" },
-      { price: 30, id: "crazybamboo", mc: "1.17", name: "crazybamboo", url: "https://youtu.be/taVl73PZ7BE", line: "old-line", flags: [ {content: "Original Idea", tag: "flag-og" } ] },
-      { price: 40, id: "ultroghast-blocks-mod", mc: "1.18", name: "ultroghast-blocks-mod", url: "https://youtu.be/XtXKsok0ZgA", line: "old-line" },
-      { price: 40, id: "die-is-op", mc: "1.18.2", name: "die-is-op", url: "https://www.youtube.com/watch?v=Qc815u06imQ&t=418s&ab_channel=Craftee", line: "old-line" },
-      { price: 40, id: "combinating-two", mc: "1.18.2", name: "combinating-two", url: "https://youtu.be/_uQwIHlqyxo", line: "old-line", infoHtml: "mod_info/combinating-two.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
-      { price: 40, id: "evolving-items", mc: "1.18.2", name: "evolving-items", url: "https://youtu.be/OpySRioyqgs", line: "old-line", infoHtml: "mod_info/evolving_items.html" },
-      { price: 40, id: "minemobs", mc: "1.18.2", name: "minemobs", url: "https://www.youtube.com/watch?v=0kaIWrjgj4c&t=552s&ab_channel=Craftee", line: "old-line", infoHtml: "mod_info/minemobs.html" },
+      { price: "'€20'", id: "custom-spawners", mc: "Fabric 1.16.5", name: "custom-spawners", url: "https://youtu.be/Omep_2zdQ0U", line: "old-line" },
+      { price: "'€20'", id: "cursedfoodmod", mc: "Fabric 1.16.5", name: "cursedfoodmod", url: "https://youtu.be/AvFUrkjHkUk", line: "old-line" },
+      { price: "'€30'", id: "crazybamboo", mc: "Fabric 1.17", name: "crazybamboo", url: "https://youtu.be/taVl73PZ7BE", line: "old-line", flags: [ {content: "Original Idea", tag: "flag-og" } ] },
+      { price: "'€40'", id: "ultroghast-blocks-mod", mc: "Fabric 1.18", name: "ultroghast-blocks-mod", url: "https://youtu.be/XtXKsok0ZgA", line: "old-line" },
+      { price: "'€40'", id: "die-is-op", mc: "Fabric 1.18.2", name: "die-is-op", url: "https://www.youtube.com/watch?v=Qc815u06imQ&t=418s&ab_channel=Craftee", line: "old-line" },
+      { price: "'€40'", id: "combinating-two", mc: "Fabric 1.18.2", name: "combinating-two", url: "https://youtu.be/_uQwIHlqyxo", line: "old-line", infoHtml: "mod_info/combinating-two.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: "'€40'", id: "evolving-items", mc: "Fabric 1.18.2", name: "evolving-items", url: "https://youtu.be/OpySRioyqgs", line: "old-line", infoHtml: "mod_info/evolving_items.html" },
+      { price: "'€40'", id: "minemobs", mc: "Fabric 1.18.2", name: "minemobs", url: "https://www.youtube.com/watch?v=0kaIWrjgj4c&t=552s&ab_channel=Craftee", line: "old-line", infoHtml: "mod_info/minemobs.html" },
 
-      { price: 60, id: "milking-mod", mc: "1.19.2", name: "milking-mod", url: "https://youtu.be/LIZjwZfccO0", line: "middle-line" },
-      { price: 60, id: "throwable", mc: "1.19.2", name: "throwable", url: "https://youtu.be/SwxVyTCClBE", line: "middle-line", flags: [ {content: "Popular", tag: "flag-pop" } ], infoHtml: "mod_info/throwable.html" },
-      { price: 60, id: "customchests", mc: "1.19.2", name: "customchests", url: "https://www.youtube.com/watch?v=qrJc_ovNykc&t=220s&ab_channel=Graser", line: "middle-line" },
-      { price: 60, id: "custom-arrows", mc: "1.19.3", name: "custom-arrows", url: "https://youtu.be/LMrRCZljz2k", line: "middle-line", infoHtml: "mod_info/custom_arrows.html" },
-      { price: 60, id: "custom-armors", mc: "1.19.3", name: "custom-armors", url: "https://youtu.be/E5gs7M7ZYU0", line: "middle-line", infoHtml: "mod_info/carmors.html" },
-      { price: 60, id: "mixing-items", mc: "1.19.3", name: "mixing-items", url: "https://youtu.be/B-N6niWbYO0", line: "middle-line" },
+      { price: "'€60'", id: "milking-mod", mc: "Fabric 1.19.2", name: "milking-mod", url: "https://youtu.be/LIZjwZfccO0", line: "middle-line" },
+      { price: "'€60'", id: "throwable", mc: "Fabric 1.19.2", name: "throwable", url: "https://youtu.be/SwxVyTCClBE", line: "middle-line", flags: [ {content: "Popular", tag: "flag-pop" } ], infoHtml: "mod_info/throwable.html" },
+      { price: "'€60'", id: "customchests", mc: "Fabric 1.19.2", name: "customchests", url: "https://www.youtube.com/watch?v=qrJc_ovNykc&t=220s&ab_channel=Graser", line: "middle-line" },
+      { price: "'€60'", id: "custom-arrows", mc: "Fabric 1.19.3", name: "custom-arrows", url: "https://youtu.be/LMrRCZljz2k", line: "middle-line", infoHtml: "mod_info/custom_arrows.html" },
+      { price: "'€60'", id: "custom-armors", mc: "Fabric 1.19.3", name: "custom-armors", url: "https://youtu.be/E5gs7M7ZYU0", line: "middle-line", infoHtml: "mod_info/carmors.html" },
+      { price: "'€60'", id: "mixing-items", mc: "Fabric 1.19.3", name: "mixing-items", url: "https://youtu.be/B-N6niWbYO0", line: "middle-line" },
 
-      { price: 80, id: "open-anything", mc: "1.19.3", name: "open-anything", url: "https://youtu.be/BMOplJwzYas", line: "modern-line", infoHtml: "mod_info/open-anything.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
-      { price: 80, id: "tntshop", mc: "1.19.3", name: "tntshop", url: "https://www.youtube.com/watch?v=gjRJnDqZNJY", line: "modern-line", infoHtml: "mod_info/tntshop.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
-      { price: 90, id: "deadlyshop", mc: "1.19.4", name: "deadlyshop", url: "https://youtu.be/qtHR0vvo5Qw", line: "modern-line", infoHtml: "mod_info/deadlyshop.html", flags: [ {content: "Really Popular", tag: "flag-pop" } ] },
-      { price: 80, id: "pickshop", mc: "1.19.4", name: "pickshop", url: "https://youtu.be/imkJnmLiUVQ", line: "modern-line", infoHtml: "mod_info/pickshop.html" },
-      { price: 80, id: "enterblock", mc: "1.19.4", name: "enterblock", url: "https://youtu.be/CGU4beS4Hv0", line: "modern-line", infoHtml: "mod_info/enterblock.html" },
-      { price: 80, id: "swordshop", mc: "1.19.4", name: "swordshop", url: "https://www.youtube.com/watch?v=VNRWCetSaYM", line: "modern-line", infoHtml: "mod_info/swordshop.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: "'€80'", id: "open-anything", mc: "Fabric 1.19.3", name: "open-anything", url: "https://youtu.be/BMOplJwzYas", line: "modern-line", infoHtml: "mod_info/open-anything.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: "'€80'", id: "tntshop", mc: "Fabric 1.19.3", name: "tntshop", url: "https://www.youtube.com/watch?v=gjRJnDqZNJY", line: "modern-line", infoHtml: "mod_info/tntshop.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
+      { price: "'€90'", id: "deadlyshop", mc: "Fabric 1.19.4", name: "deadlyshop", url: "https://youtu.be/qtHR0vvo5Qw", line: "modern-line", infoHtml: "mod_info/deadlyshop.html", flags: [ {content: "Really Popular", tag: "flag-pop" } ] },
+      { price: "'€80'", id: "pickshop", mc: "Fabric 1.19.4", name: "pickshop", url: "https://youtu.be/imkJnmLiUVQ", line: "modern-line", infoHtml: "mod_info/pickshop.html" },
+      { price: "'€80'", id: "enterblock", mc: "Fabric 1.19.4", name: "enterblock", url: "https://youtu.be/CGU4beS4Hv0", line: "modern-line", infoHtml: "mod_info/enterblock.html" },
+      { price: "'€80'", id: "swordshop", mc: "Fabric 1.19.4", name: "swordshop", url: "https://www.youtube.com/watch?v=VNRWCetSaYM", line: "modern-line", infoHtml: "mod_info/swordshop.html", flags: [ {content: "Popular", tag: "flag-pop" } ] },
 
-      { price: 80, id: "lavaVSwater", mc: "1.19.4", name: "Lava VS Water (Avatar Inspired)", url: "https://www.youtube.com/watch?v=wNNWN7XOhDc", line: "tycoons", flags: [ {content: "Original", tag: "flag-og" }, {content: "New", tag: "flag-pop" } ]},
-      { price: 80, id: "diamondVSEmerald", mc: "1.19.4", name: "Diamond VS Emerald", url: "https://www.youtube.com/watch?v=MtwY4YCpawI", line: "tycoons", flags: [ {content: "Original", tag: "flag-og" }, {content: "New", tag: "flag-pop" } ]},
-      { price: 80, id: "moneyRich", mc: "1.19.4", name: "Money & Palaces", url: "https://www.youtube.com/watch?v=4d8Ob83CI6Q", line: "tycoons", flags: [ {content: "Original", tag: "flag-og" }, {content: "New", tag: "flag-pop" } ]}
+      { price: "'€80'", id: "lavaVSwater", mc: "Fabric 1.19.4", name: "Lava VS Water (Avatar Inspired)", url: "https://www.youtube.com/watch?v=wNNWN7XOhDc", line: "tycoons", flags: [ {content: "Original", tag: "flag-og" }, {content: "New", tag: "flag-pop" } ]},
+      { price: "'€80'", id: "diamondVSEmerald", mc: "Fabric 1.19.4", name: "Diamond VS Emerald", url: "https://www.youtube.com/watch?v=MtwY4YCpawI", line: "tycoons", flags: [ {content: "Original", tag: "flag-og" }, {content: "New", tag: "flag-pop" } ]},
+      { price: "'€80'", id: "moneyRich", mc: "Fabric 1.19.4", name: "Money & Palaces", url: "https://www.youtube.com/watch?v=4d8Ob83CI6Q", line: "tycoons", flags: [ {content: "Original", tag: "flag-og" }, {content: "New", tag: "flag-pop" } ]},
+
+      { price: "'$'+(50+20)", id: "chatgpt-luckyblock", mc: "Forge", name: "ChatGPT lucky block mod", url: "https://youtu.be/0OldGWLxabs?si=v35lXxcYsvDnHSJP", line: "chosen", flags: [{ content: "Chosen", tag: "flag-chosen" }] },
+      { price: "'$'+(50+20)", id: "bedrock-touch", mc: "Forge", name: "Everything I touch turns into bedrock mod", url: "https://youtu.be/LJTAa7ufXPs?si=OW3HwxpH0-BDEb_m", line: "chosen", flags: [{ content: "Chosen", tag: "flag-chosen" }] },
+      { price: "'$'+(50+20)", id: "elemental-swords", mc: "Forge", name: "Elemental Swords mod", url: "https://youtu.be/HS5nnF6cp5k?si=0TGGYS94FesZAO-b", line: "chosen", flags: [{ content: "Chosen", tag: "flag-chosen" }] },
+      { price: "'$'+(60+20)", id: "hydraulic-press", mc: "Forge", name: "Hydraulic Press mod", url: "https://youtu.be/fq7Aa_pakYs?si=26EqUozZUSScIGpz", line: "chosen", flags: [{ content: "Chosen", tag: "flag-chosen" }] },
+      { price: "'$'+(40+20)", id: "scary-shop", mc: "Forge", name: "Scary Shop", url: "https://youtu.be/kmfL1MYV798?si=ov-WfdYNN3_0X4aN", line: "chosen", flags: [{ content: "Chosen", tag: "flag-chosen" }] },
+      { price: "'$'+(50+20)", id: "chatgpt-race", mc: "Forge", name: "CHATGPT Lucky Block Race", url: "https://youtu.be/75q6lgmTjGQ?si=h469C59fhSRbC_Dh", line: "chosen", flags: [{ content: "Chosen", tag: "flag-chosen" }] }
     ];
 
     function getThumbnail(url) {
@@ -209,10 +235,11 @@
 
         const info = document.createElement("div");
         info.className = "info";
+        const priceV = eval(mod.price)+'';
         info.innerHTML = `
           <p><strong>${mod.name}</strong></p>
-          <p>MC Version: Fabric ${mod.mc}</p>
-          <p>Price: €${mod.price}</p>
+          <p>MC Version: ${mod.mc}</p>
+          <p>Price: ${priceV}</p>
           <a href="${mod.url}" target="_blank">Watch og content video</a>
         `;
 
