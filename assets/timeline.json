@@ -1,0 +1,117 @@
+{
+  "title": "Storia europea e letteratura – Quinto anno",
+  "events": [
+    {
+      "start_date": { "year": "1848", "month": "01", "day": "12" },
+      "text": {
+        "headline": "Rivoluzioni del 1848",
+        "text": "La “Primavera dei popoli”: ondate rivoluzionarie in Francia, Italia, Germania, Ungheria per la democrazia e l’indipendenza nazionale" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1870", "month": "01", "day": "01" },
+      "text": {
+        "headline": "Belle Époque",
+        "text": "Periodo di stabilità, imperialismo, tensioni verso la I Guerra mondiale, scandalo Dreyfus con 'J’Accuse' di Zola" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1914", "month": "07", "day": "28" },
+      "text": {
+        "headline": "Prima Guerra Mondiale",
+        "text": "Conflitto mondiale che spezza gli imperi centrali (Austria‑Ungheria, Impero Ottomano, Russia)" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1917", "month": "11", "day": "07" },
+      "text": {
+        "headline": "Rivoluzione Russa",
+        "text": "I Bolscevichi prendono il potere sotto Lenin" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1945", "month": "05", "day": "08" },
+      "text": {
+        "headline": "Fine della Seconda Guerra Mondiale",
+        "text": "Crollo del nazismo, inizio della divisione dell’Europa – spaccatura Est/Ovest" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1949", "month": "05", "day": "05" },
+      "text": {
+        "headline": "Fondazione del Consiglio d’Europa",
+        "text": "Avvio dell'integrazione politica e culturale europea post-bellica" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1989", "month": "11", "day": "09" },
+      "text": {
+        "headline": "Caduta del Muro di Berlino",
+        "text": "Simbolo dell'apertura delle frontiere e del crollo del blocco sovietico" 
+      },
+      "group": "Storia"
+    },
+    {
+      "start_date": { "year": "1789", "month": "07", "day": "14" },
+      "text": {
+        "headline": "Rivoluzione francese – Presa della Bastiglia",
+        "text": "Inizio di profondi cambiamenti politici e sociali in Europa" 
+      },
+      "group": "Letteratura"
+    },
+    {
+      "start_date": { "year": "1865", "month": "01", "day": "01" },
+      "text": {
+        "headline": "Giuseppe Parini – Neoclassicismo",
+        "text": "Parini come figura chiave del risveglio letterario del Sette‑Ottocento in Italia" 
+      },
+      "group": "Letteratura"
+    },
+    {
+      "start_date": { "year": "1840", "month": "01", "day": "01" },
+      "text": {
+        "headline": "Fioritura del Romanticismo europeo",
+        "text": "Movimenti letterari che esaltano l’individualità, la nazione e i sentimenti" 
+      },
+      "group": "Letteratura"
+    },
+    {
+      "start_date": { "year": "1821", "month": "06", "day": "14" },
+      "text": {
+        "headline": "Giacomo Leopardi – 'All’Italia'",
+        "text": "Poesia patriottica inclusa nei Canti, riflessione sull’Italia e l’unità" 
+      },
+      "group": "Letteratura"
+    },
+    {
+      "start_date": { "year": "1870", "month": "01", "day": "01" },
+      "text": {
+        "headline": "Giuseppe Parini e 'Il Giorno'",
+        "text": "Il modello elevato del neoclassicismo, pedagogo della parola e critica sociale" 
+      },
+      "group": "Letteratura"
+    },
+    {
+      "start_date": { "year": "1919", "month": "01", "day": "01" },
+      "text": {
+        "headline": "Primo Novecento – Letteratura modernista",
+        "text": "Sperimentazioni linguistiche e forme nuove in Italia e Europa" 
+      },
+      "group": "Letteratura"
+    },
+    {
+      "start_date": { "year": "1948", "month": "06", "day": "01" },
+      "text": {
+        "headline": "Elsa Morante – 'La Storia'",
+        "text": "Romanzo civile sulla tragedia storica e umana della seconda guerra mondiale" 
+      },
+      "group": "Letteratura"
+    }
+  ]
+}
