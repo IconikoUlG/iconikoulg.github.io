@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Adjustable Shelving Unit</title>
+  <style>
+    h1, img {
+      margin: 0;
+    }
+    
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+      background: url('https://t4.ftcdn.net/jpg/00/88/03/19/360_F_88031936_Nioau64VAt2dHqFAkbUuS1syFtZdLZNZ.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* container for the furniture */
+    .furniture {
+      position: relative;
+      background: rgba(231, 231, 231, 0.5);
+    }
+
+    .column {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .shelf {
+      position: absolute;
+      height: var(--sh);
+      background: #fff;
+      cursor: pointer;
+      transition: top 0.15s;
+      box-sizing: border-box;
+    }
+    .shelf:hover { background: rgb(53, 154, 255) }
+    .shelf.not-modifiable:hover { cursor: default; background: #eee; }
+
+    /* popup shelfShifter */
+    .shelfShifter {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      display: none;
+      flex-direction: column;
+      z-index: 10000;
+    }
+    .shelfShifter button {
+      background: none;
+      border: none;
+      padding: 8px 10px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 44px;
+    }
+    .shelfShifter button:hover { background: #f0f0f0; }
+
+    /* label per square */
+    .height-label {
+      position: absolute;
+      font-size: 8px;
+      color: #111;
+      background: rgba(255,255,255,0.5);
+      padding: 1px 3px;
+      border-radius: 4px;
+      pointer-events: none;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .level-label {
+      color: #000001a0;
+      pointer-events: none;
+    }
+    .label-overlap { background: rgba(255,200,200,0.95); }
+
+    .items-menu {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .items-menu button {
+      font-size: 24px;
+      padding: 6px 10px;
+      cursor: pointer;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="furniture" class="furniture"></div>
+
+  <div id="items-menu" class="items-menu">
+    <button data-item="box" title="Box">📦</button>
+    <button data-item="book" title="Book">📚</button>
+    <button data-item="plant" title="Plant">🪴</button>
+    <button data-item="vase" title="Vase">🏺</button>
+    <button data-item="lamp" title="Lamp">💡</button>
+    <button data-item="clock" title="Clock">⏰</button>
+    <button data-item="picture" title="Picture">🖼️</button>
+    <button data-item="figurine" title="Figurine">🧸</button>
+    <button data-item="trophy" title="Trophy">🏆</button>
+    <button data-item="none" title="Remove item">❌</button>
+  </div>
+
+  <div id="shelfShifter" class="shelfShifter">
+    <button data-offset="1" title="Upper hole">⏫</button>
+    <button data-offset="0.5" title="Upper hole">🔼</button>
+    <button data-offset="0" title="Middle hole">⏹️</button>
+    <button data-offset="-0.5" title="Lower hole">🔽</button>
+    <button data-offset="-1" title="Lower hole">⏬</button>
+  </div>
+
+  <script>
+    Object.entries({"OS_6_4":"0.5","OS_5_3":"0.5","OS_5_0":"0.5","OS_2_2":"0.5","OS_5_4":"0.5","OS_5_2":"0.5","OS_6_3":"0.5"}).forEach(([k,v])=>localStorage.getItem(k)||localStorage.setItem(k,v));
+
+    const _cmToPx = 2.5; // 1 cm = 2.5 px
+
+    function cmToPx(cm) {
+      return cm * _cmToPx;
+    }
+    function pxToCm(px) {
+      return px * 1/_cmToPx;
+    }
+
+    // === CONFIGURATION CONSTANTS ===
+    const H = cmToPx(250.6);   // total height (px)
+    const D = cmToPx(42);    // shelf width and space between columns (px)
+    const PV = cmToPx(2.8);   // vertical piece width (px)
+    const SH = cmToPx(2.8);    // shelf thickness (px)
+    const OS = cmToPx(3.2);    // offset up/down from row center (px)
+
+    const numColumns = 7;
+    const numSpaces = numColumns - 1;
+    const numRows = 8;
+
+    const notModifiableRows = [0, 1, 7];
+
+    const items = {
+      box: {width: cmToPx(30), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'📦'}), title:'Box', sizes:'30x30 cm'},
+      book: {width: cmToPx(15), height: cmToPx(20), elGen: () => Object.assign(document.createElement('h1'), {textContent:'📚'}), title:'Book', sizes:'15x20 cm'},
+      plant: {width: cmToPx(12), height: cmToPx(25), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🪴'}), title:'Plant', sizes:'12x25 cm'},
+      vase: {width: cmToPx(10), height: cmToPx(25), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🏺'}), title:'Vase', sizes:'10x25 cm'},
+      lamp: {width: cmToPx(15), height: cmToPx(35), elGen: () => Object.assign(document.createElement('h1'), {textContent:'💡'}), title:'Lamp', sizes:'15x35 cm'},
+      clock: {width: cmToPx(20), height: cmToPx(20), elGen: () => Object.assign(document.createElement('h1'), {textContent:'⏰'}), title:'Clock', sizes:'20x20 cm'},
+      picture: {width: cmToPx(25), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🖼️'}), title:'Picture', sizes:'25x30 cm'},
+      figurine: {width: cmToPx(10), height: cmToPx(15), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🧸'}), title:'Figurine', sizes:'10x15 cm'},
+      trophy: {width: cmToPx(12), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🏆'}), title:'Trophy', sizes:'12x30 cm'},
+      none: {width:0, height:0, elGen:()=>Object.assign(document.createElement('h1'),{textContent:'❌'}), title:'Remove item', sizes:'0x0 cm'}
+    };
+
+
+    let currentItem = null;
+
+    const follower = document.createElement('div');
+    follower.style.position = 'absolute';
+    follower.style.pointerEvents = 'none'; // so it doesn’t block clicks
+    follower.style.zIndex = 9999;
+    follower.style.transform = 'translate(-50%, -50%)'; // center on cursor
+    document.body.appendChild(follower);
+
+    function startFollowing(content) {
+      follower.innerHTML = content;
+      document.addEventListener('mousemove', followMouse);
+    }
+
+    function stopFollowing() {
+      document.removeEventListener('mousemove', followMouse);
+      follower.innerHTML = '';
+    }
+
+    function followMouse(e) {
+      follower.style.left = e.pageX + 'px';
+      follower.style.top = e.pageY + 'px';
+    };
+
+    function handleItemClick(e){
+      const iKey = e.currentTarget.dataset.item;
+      if (iKey === 'none') {
+        stopFollowing();
+        currentItem = null;
+        return;
+      }
+
+      const i=items[iKey]; 
+      if(!i) return; 
+
+      startFollowing(i.elGen().outerHTML);
+      currentItem = i;
+
+      console.log('Selected item:', i.title, i.sizes);
+    }
+
+    document.querySelectorAll('button[data-item]').forEach(b=>b.onclick=handleItemClick);
+
+    const furniture = document.getElementById("furniture");
+    const furnitureWidth = numSpaces * D + numColumns * PV;
+    furniture.style.width = `${furnitureWidth}px`;
+    furniture.style.height = `${H}px`;
+
+    // place vertical columns
+    for (let i = 0; i < numColumns; i++) {
+      const col = document.createElement("div");
+      col.className = "column";
+      col.style.width = `${PV}px`;
+      col.style.left = `${i * (D + PV)}px`;
+      furniture.appendChild(col);
+    }
+
+    const rowSpacing = (H - SH) / (numRows - 1);
+
+    const shelvesByRow = Array.from({length: numRows}, () => Array(numSpaces).fill(null));
+
+    const spacesByRow = Array.from({length: numRows - 1}, () => Array(numSpaces).fill(null));
+
+    for (let row = 0; row < numRows; row++) {
+      for (let space = 0; space < numSpaces; space++) {
+        const shelf = document.createElement("div");
+        shelf.className = "shelf";
+        shelf.style.setProperty("--sh", `${SH}px`);
+        shelf.style.width = `${D}px`;
+        shelf.style.left = `${space * (D + PV) + PV}px`;
+
+        const offsetLSKey = `OS_${row}_${space}`;
+        let offsetState = parseFloat(localStorage.getItem(offsetLSKey)||0);
+
+        function updatePosition() {
+          const baseY = row * rowSpacing;
+          const offset = offsetState * OS;
+          shelf.style.top = `${baseY - offset}px`;
+        }
+
+        shelf.dataset.row = String(row);
+        shelf.dataset.space = String(space);
+        shelf.getOffsetState = () => offsetState;
+        shelf.setOffsetState = (val) => {
+          if (offsetState != val) {
+            localStorage.setItem(offsetLSKey, String(val));
+          }
+          offsetState = val;
+
+          updatePosition();
+          updateAllLabels();
+        };
+
+        const spaceContainer = document.createElement("div");
+        spaceContainer.style.position = "relative";
+        spaceContainer.style.width = `100%`;
+        spaceContainer.style.height = `100%`;
+        shelf.appendChild(spaceContainer);
+
+        if (!notModifiableRows.includes(row)) {
+          const clickArea = document.createElement("div");
+          clickArea.style.position = "absolute";
+          clickArea.style.top = "0";
+          clickArea.style.left = "0";
+          clickArea.style.width = "100%";
+          clickArea.style.height = "100%";
+          clickArea.style.zIndex = "2";
+          clickArea.style.cursor = "pointer";
+          spaceContainer.appendChild(clickArea);
+          clickArea.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const shelfShifter = document.getElementById("shelfShifter");
+            shelfShifter.style.display = "flex";
+            shelfShifter.style.left = `${e.pageX}px`;
+            shelfShifter.style.top = `${e.pageY}px`;
+            shelfShifter.currentShelf = shelf;
+          });
+        } else {
+          shelf.classList.add("not-modifiable");
+        }
+
+        if (row !== 0) {
+          const spaceEl = document.createElement("div");
+          spaceEl.style.position = "absolute";
+          spaceEl.style.bottom = `${SH}px`;
+          spaceEl.style.width = `100%`;
+          spaceEl.style.height = `${rowSpacing/5*4 - SH}px`;
+          spaceEl.style.zIndex = "1";
+          spaceEl.style.display = "flex";
+          spaceEl.style.justifyContent = "center";
+          spaceEl.style.alignItems = "end";
+
+          let item = null;
+
+          spaceEl.getItem = () => item;
+          spaceEl.setItem = (newItem) => {
+            item = newItem;
+            spaceEl.innerHTML = "";
+            if (item) {
+              const it = item.elGen();
+              console.log('Placing item', it, 'in space', {row, space});
+              spaceEl.style.height = `${item.height}px`;
+              spaceEl.style.color = 'black';
+              spaceEl.appendChild(it);
+            }
+          };
+          spaceEl.canSetItem = (item) => {
+            if (!item) return true;
+            const currentHeight = getShelfYTop(row, space) - getShelfYTop(row - 1, space);
+            return item.height <= currentHeight;
+          };
+
+          spaceEl.addEventListener("click", (e) => {
+            console.log('Space clicked', {row, spaceEl, currentItem});
+
+            e.stopPropagation();
+            if (currentItem && spaceEl.canSetItem(currentItem)) {
+              spaceEl.setItem(currentItem);
+            } else if (currentItem) {
+              alert(`Not enough space for ${currentItem.title} (${currentItem.sizes})`);
+            }
+          });
+          spaceContainer.appendChild(spaceEl);
+          spacesByRow[row - 1][spaceEl] = spaceEl;
+        }
+
+        updatePosition();
+        furniture.appendChild(shelf);
+        shelvesByRow[row][space] = shelf;
+      }
+    }
+
+    function getShelfYTop(row, space) {
+      console.log('getShelfYTop', {row, space});
+      const s = shelvesByRow[row][space];
+      return parseFloat(s.style?.top || 0);
+    }
+
+    function getSpaceBottom(row,space) {
+      const top = getShelfYTop(row+1, space);
+      return top;
+    }
+
+    const heightLabels = Array.from({length: numRows - 1}, () => Array(numSpaces).fill(null));
+
+    for (let level = 0; level < numRows - 1; level++) {
+      for (let space = 0; space < numSpaces; space++) {
+        const hlbl = document.createElement("div");
+        hlbl.className = "height-label";
+        hlbl.style.left = `${space * (D + PV) + 1}px`;
+        furniture.appendChild(hlbl);
+        heightLabels[level][space] = hlbl;
+
+        const lbl = document.createElement("div");
+        lbl.className = "level-label";
+        lbl.textContent = `R${level}C${space}`;
+        lbl.style.position = "absolute";
+        lbl.style.left = `${space * (D + PV) + D/2}px`;
+        lbl.style.top = `${level * rowSpacing + rowSpacing/2}px`;
+        lbl.style.fontSize = "6px";
+        lbl.style.transform = "translateX(-50%)";
+        furniture.appendChild(lbl);
+      }
+    }
+
+    function updateAllLabels() {
+      for (let level = 0; level < numRows - 1; level++) {
+        for (let space = 0; space < numSpaces; space++) {
+          const bottomTop = getShelfYTop(level, space);
+          const topTop = getShelfYTop(level + 1, space);
+          const bottomBottom = bottomTop + SH;
+          const topTopPos = topTop;
+
+          const available = topTopPos - bottomBottom;
+
+          const lbl = heightLabels[level][space];
+          lbl.textContent = `${Math.round(pxToCm(available))}cm`;
+          if (available < 0) {
+            lbl.classList.add('label-overlap');
+          } else {
+            lbl.classList.remove('label-overlap');
+          }
+
+          const centerY = bottomBottom + (topTopPos - bottomBottom) / 2;
+          lbl.style.top = `${centerY}px`;
+        }
+      }
+    }
+
+    updateAllLabels();
+
+    const shelfShifter = document.getElementById("shelfShifter");
+    shelfShifter.addEventListener("click", (e) => {
+      if (e.target.tagName === "BUTTON") {
+        const val = parseFloat(e.target.dataset.offset);
+        if (shelfShifter.currentShelf) shelfShifter.currentShelf.setOffsetState(val);
+        shelfShifter.style.display = "none";
+      }
+    });
+
+    document.addEventListener("click", () => { shelfShifter.style.display = "none"; });
+
+    window.__SHELF_CONFIG = { H, D, PV, SH, OS, numRows, numSpaces };
+  </script>
+</body>
+</html>
