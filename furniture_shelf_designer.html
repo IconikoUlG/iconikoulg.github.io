@@ -99,26 +99,59 @@
       border-radius: 4px;
       text-align: center;
     }
+
+      #exportBtn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  #exportBtn:hover {
+    background-color: #45a049;
+  }
+
+  #exportBtn svg {
+    width: 16px;
+    height: 16px;
+    fill: white;
+  }
   </style>
 </head>
 <body>
+  <button id="exportBtn">
+  <!-- Export Icon (Arrow out of box) -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M5 20h14v-2H5v2zm7-18L5.33 11h3.67v4h4v-4h3.67L12 2z"/>
+  </svg>
+  Export
+</button>
+
   <div id="furniture" class="furniture"></div>
 
   <div id="items-menu" class="items-menu">
     <button data-item="bianca" title="Bianca">
-      <img src="https://iconikoulg.github.io/furniture_shelf_designer/bianca.png" alt="Bianca" style="width:24px; aspect-ratio: 1/1;"/>
+      <img src="https://iconikoulg.github.io/assets/pngs/bianca.png" alt="Bianca" style="width:24px; aspect-ratio: 1/1;"/>
     </button>
     <button data-item="tess" title="Tess">
-      <img src="https://iconikoulg.github.io/furniture_shelf_designer/tess.png" alt="Tess" style="width:24px; aspect-ratio: 1/1;"/>
+      <img src="https://iconikoulg.github.io/assets/pngs/tess.png" alt="Tess" style="width:24px; aspect-ratio: 1/1;"/>
     </button>
     <button data-item="traspa" title="Traspa">
-      <img src="https://iconikoulg.github.io/furniture_shelf_designer/traspa.png" alt="Traspa" style="width:24px; aspect-ratio: 1/1;"/>
+      <img src="https://iconikoulg.github.io/assets/pngs/traspa.png" alt="Traspa" style="width:24px; aspect-ratio: 1/1;"/>
     </button>
     <button data-item="book" title="Book">📚</button>
     <button data-item="plant" title="Plant">🪴</button>
     <button data-item="vase" title="Vase">🏺</button>
     <button data-item="lamp" title="Lamp">💡</button>
-    <button data-item="clock" title="Clock">⏰</button>
     <button data-item="picture" title="Picture">🖼️</button>
     <button data-item="figurine" title="Figurine">🧸</button>
     <button data-item="trophy" title="Trophy">🏆</button>
@@ -167,19 +200,36 @@
       return img;
     }; 
 
-    const items = {
-      bianca: {width: ctmToPx(32), height: cmToPx(32), elGen: () => imgBuilder('https://iconikoulg.github.io/furniture_shelf_designer/bianca_front.png'), title:'Box', sizes:'32x32 cm'},
-      tess: {width: ctmToPx(37.5), height: cmToPx(32.7), elGen: () => imgBuilder('https://iconikoulg.github.io/furniture_shelf_designer/tess_front.png'), title:'Box', sizes:'20x30 cm'},
-      traspa: {width: ctmToPx(37), height: cmToPx(33), elGen: () => imgBuilder('https://iconikoulg.github.io/furniture_shelf_designer/traspa_front.png'), title:'Box', sizes:'20x30 cm'},
-      book: {width: cmToPx(15), height: cmToPx(20), elGen: () => Object.assign(document.createElement('h1'), {textContent:'📚'}), title:'Book', sizes:'15x20 cm'},
-      plant: {width: cmToPx(12), height: cmToPx(25), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🪴'}), title:'Plant', sizes:'12x25 cm'},
-      vase: {width: cmToPx(10), height: cmToPx(25), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🏺'}), title:'Vase', sizes:'10x25 cm'},
-      lamp: {width: cmToPx(15), height: cmToPx(35), elGen: () => Object.assign(document.createElement('h1'), {textContent:'💡'}), title:'Lamp', sizes:'15x35 cm'},
-      picture: {width: cmToPx(25), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🖼️'}), title:'Picture', sizes:'25x30 cm'},
-      figurine: {width: cmToPx(10), height: cmToPx(15), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🧸'}), title:'Figurine', sizes:'10x15 cm'},
-      trophy: {width: cmToPx(12), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🏆'}), title:'Trophy', sizes:'12x30 cm'},
-      none: {width:0, height:0, elGen:()=>Object.assign(document.createElement('h1'),{textContent:'❌'}), title:'Remove item', sizes:'0x0 cm'}
+    // Step 1: Create a dictionary of all elGen functions
+    const elgens = {
+      bianca: () => imgBuilder('https://iconikoulg.github.io/assets/pngs/bianca_front.png'),
+      tess: () => imgBuilder('https://iconikoulg.github.io/assets/pngs/tess_front.png'),
+      traspa: () => imgBuilder('https://iconikoulg.github.io/assets/pngs/traspa_front.png'),
+      book: () => Object.assign(document.createElement('h1'), {textContent:'📚'}),
+      plant: () => Object.assign(document.createElement('h1'), {textContent:'🪴'}),
+      vase: () => Object.assign(document.createElement('h1'), {textContent:'🏺'}),
+      lamp: () => Object.assign(document.createElement('h1'), {textContent:'💡'}),
+      picture: () => Object.assign(document.createElement('h1'), {textContent:'🖼️'}),
+      figurine: () => Object.assign(document.createElement('h1'), {textContent:'🧸'}),
+      trophy: () => Object.assign(document.createElement('h1'), {textContent:'🏆'}),
+      none: () => Object.assign(document.createElement('h1'), {textContent:'❌'})
     };
+
+    // Step 2: Replace elGen in items with a key to the function
+    const items = {
+      bianca: {width: cmToPx(32), height: cmToPx(34), genKey:'bianca', title:'Box', sizes:'32x32 cm'},
+      tess: {width: cmToPx(37.5), height: cmToPx(33), genKey:'tess', title:'Box', sizes:'20x30 cm'},
+      traspa: {width: cmToPx(37), height: cmToPx(35), genKey:'traspa', title:'Box', sizes:'20x30 cm'},
+      book: {width: cmToPx(15), height: cmToPx(20), genKey:'book', title:'Book', sizes:'15x20 cm'},
+      plant: {width: cmToPx(12), height: cmToPx(25), genKey:'plant', title:'Plant', sizes:'12x25 cm'},
+      vase: {width: cmToPx(10), height: cmToPx(25), genKey:'vase', title:'Vase', sizes:'10x25 cm'},
+      lamp: {width: cmToPx(15), height: cmToPx(35), genKey:'lamp', title:'Lamp', sizes:'15x35 cm'},
+      picture: {width: cmToPx(25), height: cmToPx(30), genKey:'picture', title:'Picture', sizes:'25x30 cm'},
+      figurine: {width: cmToPx(10), height: cmToPx(15), genKey:'figurine', title:'Figurine', sizes:'10x15 cm'},
+      trophy: {width: cmToPx(12), height: cmToPx(30), genKey:'trophy', title:'Trophy', sizes:'12x30 cm'},
+      none: {width:0, height:0, genKey:'none', title:'Remove item', sizes:'0x0 cm'}
+    };
+
 
 
     let currentItem = null;
@@ -217,7 +267,11 @@
       const i=items[iKey]; 
       if(!i) return; 
 
-      startFollowing(i.elGen().outerHTML);
+      const divWrapper = document.createElement('div');
+      divWrapper.style = "width:40px; aspect-ratio:1/1;";
+      console.log('elgens[i.genKey]', elgens[i.genKey]);
+      divWrapper.appendChild(elgens[i.genKey]());
+      startFollowing(divWrapper.outerHTML);
       currentItem = i;
 
       console.log('Selected item:', i.title, i.sizes);
@@ -314,19 +368,34 @@
           spaceEl.style.justifyContent = "center";
           spaceEl.style.alignItems = "end";
 
-          let item = null;
+          const itemLSKey = `ITEM_${row}_${space}`;
+          const storedItem = localStorage.getItem(itemLSKey);
+          let item = storedItem ? JSON.parse(storedItem) || null : null;
 
-          spaceEl.getItem = () => item;
-          spaceEl.setItem = (newItem) => {
-            item = newItem;
+          spaceEl.reloadItem = () => {
             spaceEl.innerHTML = "";
             if (item) {
-              const it = item.elGen();
+              console.log('Reloading item from storage:', item);
+              let it;
+              try { it = elgens[item.genKey](); } catch(e) { 
+                console.warn('Failed to recreate item from storage, removing it.', e);
+                item = null; localStorage.removeItem(itemLSKey); return; }
               console.log('Placing item', it, 'in space', {row, space});
               spaceEl.style.height = `${item.height}px`;
               spaceEl.style.color = 'black';
               spaceEl.appendChild(it);
             }
+          }
+
+          spaceEl.getItem = () => item;
+          spaceEl.setItem = (newItem) => {
+            item = newItem;
+            if (!item) {
+              localStorage.removeItem(itemLSKey);
+            } else {
+              localStorage.setItem(itemLSKey, JSON.stringify(item));
+            }
+            spaceEl.reloadItem();
           };
           spaceEl.canSetItem = (item) => {
             if (!item) return true;
@@ -343,7 +412,20 @@
             } else if (currentItem) {
               alert(`Not enough space for ${currentItem.title} (${currentItem.sizes})`);
             }
+
+            stopFollowing();
+            currentItem = null;
           });
+
+          spaceEl.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            spaceEl.setItem(null);
+            stopFollowing();
+            currentItem = null;
+          });
+
+          spaceEl.reloadItem();
           spaceContainer.appendChild(spaceEl);
           spacesByRow[row - 1][spaceEl] = spaceEl;
         }
@@ -426,5 +508,42 @@
 
     window.__SHELF_CONFIG = { H, D, PV, SH, OS, numRows, numSpaces };
   </script>
+  <script>
+document.getElementById('exportBtn').addEventListener('click', async () => {
+  // Collect all localStorage data
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    data[key] = localStorage.getItem(key);
+  }
+
+  const jsonData = JSON.stringify(data, null, 2);
+  const file = new File([jsonData], "shelvesLayout.json", { type: "application/json" });
+
+  // Try Web Share API
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: "LocalStorage Export",
+        text: "Here is my localStorage data."
+      });
+      console.log("Shared successfully!");
+      return;
+    } catch (err) {
+      console.warn("Sharing failed, falling back to download:", err);
+    }
+  }
+
+  // Fallback: download the file
+  const blob = new Blob([jsonData], { type: "application/json" });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = "shelvesLayout.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+</script>
 </body>
 </html>
