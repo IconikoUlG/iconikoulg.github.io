@@ -105,7 +105,15 @@
   <div id="furniture" class="furniture"></div>
 
   <div id="items-menu" class="items-menu">
-    <button data-item="box" title="Box">📦</button>
+    <button data-item="bianca" title="Bianca">
+      <img src="https://iconikoulg.github.io/furniture_shelf_designer/bianca.png" alt="Bianca" style="height:24px;"/>
+    </button>
+    <button data-item="tess" title="Tess">
+      <img src="https://iconikoulg.github.io/furniture_shelf_designer/tess.png" alt="Tess" style="height:24px;"/>
+    </button>
+    <button data-item="traspa" title="Traspa">
+      <img src="https://iconikoulg.github.io/furniture_shelf_designer/traspa.png" alt="Traspa" style="height:24px;"/>
+    </button>
     <button data-item="book" title="Book">📚</button>
     <button data-item="plant" title="Plant">🪴</button>
     <button data-item="vase" title="Vase">🏺</button>
@@ -150,13 +158,23 @@
 
     const notModifiableRows = [0, 1, 7];
 
+    const imgBuilder = (src) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.style.maxWidth = '100%';
+      img.style.maxHeight = '100%';
+      img.style.objectFit = 'contain';
+      return img;
+    }; 
+
     const items = {
-      box: {width: cmToPx(30), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'📦'}), title:'Box', sizes:'30x30 cm'},
+      bianca: {width: ctmToPx(32), height: cmToPx(32), elGen: () => imgBuilder('https://iconikoulg.github.io/furniture_shelf_designer/bianca_front.png'), title:'Box', sizes:'32x32 cm'},
+      tess: {width: ctmToPx(37.5), height: cmToPx(32.7), elGen: () => imgBuilder('https://iconikoulg.github.io/furniture_shelf_designer/tess_front.png'), title:'Box', sizes:'20x30 cm'},
+      traspa: {width: ctmToPx(37), height: cmToPx(33), elGen: () => imgBuilder('https://iconikoulg.github.io/furniture_shelf_designer/traspa_front.png'), title:'Box', sizes:'20x30 cm'},
       book: {width: cmToPx(15), height: cmToPx(20), elGen: () => Object.assign(document.createElement('h1'), {textContent:'📚'}), title:'Book', sizes:'15x20 cm'},
       plant: {width: cmToPx(12), height: cmToPx(25), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🪴'}), title:'Plant', sizes:'12x25 cm'},
       vase: {width: cmToPx(10), height: cmToPx(25), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🏺'}), title:'Vase', sizes:'10x25 cm'},
       lamp: {width: cmToPx(15), height: cmToPx(35), elGen: () => Object.assign(document.createElement('h1'), {textContent:'💡'}), title:'Lamp', sizes:'15x35 cm'},
-      clock: {width: cmToPx(20), height: cmToPx(20), elGen: () => Object.assign(document.createElement('h1'), {textContent:'⏰'}), title:'Clock', sizes:'20x20 cm'},
       picture: {width: cmToPx(25), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🖼️'}), title:'Picture', sizes:'25x30 cm'},
       figurine: {width: cmToPx(10), height: cmToPx(15), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🧸'}), title:'Figurine', sizes:'10x15 cm'},
       trophy: {width: cmToPx(12), height: cmToPx(30), elGen: () => Object.assign(document.createElement('h1'), {textContent:'🏆'}), title:'Trophy', sizes:'12x30 cm'},
