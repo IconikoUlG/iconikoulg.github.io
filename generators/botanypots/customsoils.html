@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Custom Crops Generator</title>
+  <title>Custom SOILS Generator</title>
   <style>
     :root {
       --bg: #111315;
@@ -227,16 +227,6 @@
       color: var(--text);
       font: inherit;
       padding: 10px 14px;
-    }
-
-    .growth-time-fields {
-      display: flex;
-      justify-content: left;
-    }
-    
-    .growth-time-fields > .input-box {
-      flex: 1;
-      width: 50%;
     }
 
     select {
@@ -470,7 +460,7 @@
         <div class="brand-mark" aria-hidden="true">
           <img src="./BotanyPotThumbnail512.png" width="32px" height="32px">
         </div>
-        <div>Botany Pots Custom Crops Generator</div>
+        <div>Botany Pots Custom SOILS Generator <a href="./customcrops.html" target="_blank" rel="noopener noreferrer">(Crops Generator)</a></div>
       </div>
       <div class="nav-icons" aria-hidden="true">
         <div class="nav-icon">◎</div>
@@ -488,8 +478,8 @@
           <div class="field-grid">
             <div>
               <div class="field-row">
-                <div class="label-box">plant_id <span class="required-star">*</span></div>
-                <div class="input-box"><input id="plant_id" type="text" placeholder="example: mymod:blue_fern" /></div>
+                <div class="label-box">soil_id <span class="required-star">*</span></div>
+                <div class="input-box"><input id="soil_id" type="text" placeholder="example: custom_dirt" /></div>
               </div>
               <div class="hint">Id / String with no spaces.</div>
             </div>
@@ -497,7 +487,7 @@
             <div>
               <div class="field-row">
                 <div class="label-box">item_id <span class="required-star">*</span></div>
-                <div class="input-box"><input id="item_id" type="text" placeholder="example: mymod:blue_fern_seed" /></div>
+                <div class="input-box"><input id="item_id" type="text" placeholder="example: mymod:custom_dirt" /></div>
               </div>
               <div class="hint">Id / String with no spaces.</div>
             </div>
@@ -507,109 +497,10 @@
         <div class="section">
           <h3 class="section-header">Visuals data</h3>
           <div class="field-grid">
-            <div class="hint">Id and size of the placed crop block</div>
+            <div class="hint">Id and size of the placed soil block</div>
             <div class="field-row">
               <div class="label-box">block_id <span class="required-star">*</span></div>
-              <div class="input-box"><input id="block_id" type="text" placeholder="example: mymod:blue_fern_crop" /></div>
-            </div>
-
-            <div class="field-row">
-              <div class="label-box">block_size</div>
-              <div class="select-box">
-                <select id="block_size">
-                  <option value="small">small</option>
-                  <option value="medium" selected>medium</option>
-                  <option value="big">big</option>
-                </select>
-              </div>
-            </div>
-            <div class="hint">Id and size of the crop when 50% ready.</div>
-
-            <div class="field-row">
-              <div class="label-box">half_ready_block_id</div>
-              <div class="input-box"><input id="half_ready_block_id" type="text" placeholder="optional" /></div>
-            </div>
-
-            <div>
-            <div class="field-row">
-              <div class="label-box">half_ready_block_size</div>
-              <div class="select-box">
-                <select id="half_ready_block_size">
-                  <option value="small">small</option>
-                  <option value="medium" selected>medium</option>
-                  <option value="big">big</option>
-                </select>
-              </div>
-            </div>
-            <div class="hint">Id and size of the block when ready.</div>
-            </div>
-
-            <div class="field-row">
-              <div class="label-box">ready_block_id <span class="required-star">*</span></div>
-              <div class="input-box"><input id="ready_block_id" type="text" placeholder="example: mymod:blue_fern_ready" /></div>
-            </div>
-
-            <div class="field-row">
-              <div class="label-box">ready_block_size</div>
-              <div class="select-box">
-                <select id="ready_block_size">
-                  <option value="small">small</option>
-                  <option value="medium" selected>medium</option>
-                  <option value="big">big</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3 class="section-header">Conditions data</h3>
-          <div class="field-grid">
-            <div>
-              <div class="list-box">
-                <div class="list-header">
-                  <div>
-                    <div class="list-title">soils <span class="required-star">*</span></div>
-                    <div class="small-note">List of soil_id(s). At least one item required.</div>
-                  </div>
-                  <button id="addSoilBtn" class="btn btn-add" type="button">+ Add soil</button>
-                </div>
-                <div id="soilsList" class="list-items"></div>
-                <div class="small-note" style="padding: 10px;">You can add custom soils using and use their soil_id(s). Check the <a href="./customsoils.html" target="_blank" rel="noopener noreferrer">generator</a></div>
-                <datalist id="defaults-soil-ids">
-                  <option value="farmland"></option> <option value="dirt"></option> <option value="grass_block"></option> <option value="coarse_dirt"></option> <option value="podzol"></option> <option value="rooted_dirt"></option> <option value="moss_block"></option> <option value="mud"></option> <option value="sand"></option> <option value="red_sand"></option> <option value="soul_sand"></option> <option value="crimson_nylium"></option> <option value="warped_nylium"></option> <option value="end_stone"></option> <option value="jungle_log"></option> <option value="gravel"></option> <option value="clay"></option> <option value="stone"></option> <option value="mycelium"></option> <option value="pale_moss"></option>
-                </datalist>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="label-box">condition <span class="required-star">*</span></div>
-              <div class="select-box">
-                <select id="condition">
-                  <option value="any" selected>any</option>
-                  <option value="dark">dark</option>
-                  <option value="light">light</option>
-                  <option value="mushroom">mushroom</option>
-                </select>
-              </div>
-            </div>
-
-
-            <div class="field-row">
-                <div class="label-box">growth_time <span class="required-star">*</span></div>
-                <div class="growth-time-fields">
-                  <div class="input-box"><input id="growth-time-0" type="text" placeholder="1" /></div>
-                  <div class="input-box"><input id="growth-time-1" type="text" placeholder="5" /></div>
-                </div>
-            </div>
-            <div class="hint">Numbers. 1 = 1 min, 0.5 = 30 seconds, 10 = 10 mins</div>
-
-            <div>
-              <div class="field-row">
-                <div class="label-box">loot <span class="required-star">*</span></div>
-                <div class="textarea-box"><textarea id="loot" placeholder="Paste or type the loot string here..."></textarea></div>
-              </div>
-              <div class="hint"><p>Loot table id OR Loot table content (suggestion: use <a href="https://misode.github.io/loot-table/" target="_blank" rel="noopener noreferrer">https://misode.github.io/loot-table/</a>) </p></div>
+              <div class="input-box"><input id="block_id" type="text" placeholder="example: mymod:custom_dirt" /></div>
             </div>
           </div>
         </div>
@@ -650,19 +541,9 @@
     const STORAGE_KEY = 'custom-generator-state-v1';
 
     const defaultState = {
-      plant_id: 'my_plant_id',
-      item_id: 'minecraft:item_id',
-      block_id: 'minecraft:block_id',
-      block_size: 'medium',
-      half_ready_block_id: '',
-      half_ready_block_size: 'medium',
-      ready_block_id: 'minecraft:block_id',
-      ready_block_size: 'medium',
-      soils: ['dirt','grass_block','farmland'],
-      condition: 'any',
-      loot: '{type:"minecraft:block",pools:[{rolls:1,entries:[{type:"minecraft:item",name:"minecraft:oak_planks"}]}],functions:[]}',
-      gtime0: 1,
-      gtime1: 5
+      soil_id: 'my_soil_id',
+      item_id: 'mymod:item_id',
+      block_id: 'mymod:block_id',
     };
 
     let state = loadState();
@@ -692,40 +573,12 @@
       return typeof value === 'string' && value.trim() !== '' && !/\s/.test(value);
     }
 
-    function adjustConditionValue(value) {
-        switch (value) {
-            case "any": 
-                return "ulg_botanypot.ambient.any";
-                break;
-            case "light":
-                return "ulg_botanypot.ambient.light";
-                break;
-            case "dark":
-                return "ulg_botanypot.ambient.dark";
-                break;
-            case "mushroom":
-                return "ulg_botanypot.special.mushroom";
-                break;
-            default:
-                return value;
-        }
-    }
-
-    function adjustGrowthTimeValue(value) {
-      console.log("value got is ",value);
-      const num = value + 0;
-      return Math.ceil(value*6);
-    }
-
     function getValidationErrors() {
       const errors = [];
       const noSpaceRequired = [
-        ['plant_id', state.plant_id],
+        ['soil_id', state.soil_id],
         ['item_id', state.item_id],
-        ['block_id', state.block_id],
-        ['ready_block_id', state.ready_block_id],
-        ['growth_time [0]', state.gtime0],
-        ['growth_time [1]', state.gtime1]
+        ['block_id', state.block_id]
       ];
 
       for (const [name, value] of noSpaceRequired) {
@@ -757,27 +610,14 @@
     }
 
     function calculateCommandContent() {
-      const plantId = escapeNbtString(state.plant_id.trim());
+      const soilId = escapeNbtString(state.soil_id.trim());
 
       const soils = state.soils.map(v => String(v).trim()).filter(Boolean);
-      var base = !Boolean(state.forceAppend) ? `/data modify storage ulg:botanypots custom_plants[{plant_id:"${plantId}"}] set value {`
-      : "/data modify storage ulg:botanypots custom_plants append value {";
-      base+=(`plant_id:"${plantId}", `);
+      var base = !Boolean(state.forceAppend) ? `/data modify storage ulg:botanypots custom_soils[{soil_id:"${soilId}"}] set value {`
+      : "/data modify storage ulg:botanypots custom_soils append value {";
+      base+=(`soil_id:"${soilId}", `);
       base+=(`item_id:"${escapeNbtString(state.item_id.trim())}", `);
-      base+=(`block_id:"${escapeNbtString(state.block_id.trim())}", `);
-      base+=(`block_size:"${escapeNbtString(state.block_size)}", `);
-
-      if (state.half_ready_block_id.trim() !== '') {
-        base+=(`half_ready_block_id:"${escapeNbtString(state.half_ready_block_id.trim())}", `);
-        base+=(`half_ready_block_size:"${escapeNbtString(state.half_ready_block_size)}", `);
-      }
-      base+=(`ready_block_id:"${escapeNbtString(state.ready_block_id.trim())}", `);
-      base+=(`ready_block_size:"${escapeNbtString(state.ready_block_size)}", `);
-
-      base+=(`soils:[${soils.map(v => `{soil_id:"${escapeNbtString(v)}"}`).join(', ')}], `);
-      base+=(`growth_time:[${adjustGrowthTimeValue(escapeNbtString(state.gtime0))}, ${adjustGrowthTimeValue(escapeNbtString(state.gtime1))}], `);
-      base+=(`condition:"${adjustConditionValue(escapeNbtString(state.condition))}", `);
-      base+=(`loot:"${escapeNbtString(state.loot)}"`);
+      base+=(`block_id:"${escapeNbtString(state.block_id.trim())}"`);
       base+=('}');
 
       return base;
@@ -788,43 +628,20 @@
       const lines = [];
 
       lines.push('{');
-      lines.push(`  plant_id: "${escapeNbtString(state.plant_id.trim())}",`);
+      lines.push(`  soil_id: "${escapeNbtString(state.soil_id.trim())}",`);
       lines.push(`  item_id: "${escapeNbtString(state.item_id.trim())}",`);
-      lines.push(`  block_id: "${escapeNbtString(state.block_id.trim())}",`);
-      lines.push(`  block_size: "${escapeNbtString(state.block_size)}",`);
-
-      if (state.half_ready_block_id.trim() !== '') {
-        lines.push(`  half_ready_block_id: "${escapeNbtString(state.half_ready_block_id.trim())}",`);
-        lines.push(`  half_ready_block_size: "${escapeNbtString(state.half_ready_block_size)}",`);
-      }
-      lines.push(`  ready_block_id: "${escapeNbtString(state.ready_block_id.trim())}",`);
-      lines.push(`  ready_block_size: "${escapeNbtString(state.ready_block_size)},"`);
-
-      lines.push(`  soils: [${soils.map(v => `{soil_id:"${escapeNbtString(v)}"}`).join(', ')}],`);
-      lines.push(`  growth_time: [${adjustGrowthTimeValue(escapeNbtString(state.gtime0))}, ${adjustGrowthTimeValue(escapeNbtString(state.gtime1))}],`);
-      lines.push(`  condition: "${adjustConditionValue(escapeNbtString(state.condition))}",`);
-      lines.push(`  loot: "${escapeNbtString(state.loot)}"`);
+      lines.push(`  block_id: "${escapeNbtString(state.block_id.trim())}"`);
       lines.push('}');
 
       return lines.join('\n');
     }
 
     function updateStateFromInputs() {
-      state.plant_id = document.getElementById('plant_id').value;
+      state.soil_id = document.getElementById('soil_id').value;
       state.item_id = document.getElementById('item_id').value;
       state.block_id = document.getElementById('block_id').value;
-      state.block_size = document.getElementById('block_size').value;
-      state.half_ready_block_id = document.getElementById('half_ready_block_id').value;
-      state.half_ready_block_size = document.getElementById('half_ready_block_size').value;
-      state.ready_block_id = document.getElementById('ready_block_id').value;
-      state.ready_block_size = document.getElementById('ready_block_size').value;
-      state.condition = document.getElementById('condition').value;
-      state.loot = document.getElementById('loot').value;
       state.version = document.getElementById('version').value;
       state.forceAppend = document.getElementById('forceAppend').checked;
-      state.soils = Array.from(document.querySelectorAll('.soil-input')).map(el => el.value);
-      state.gtime0 = document.getElementById('growth-time-0').value;
-      state.gtime1 = document.getElementById('growth-time-1').value;
     }
 
     function rerender() {
@@ -846,46 +663,9 @@
       }
     }
 
-    function renderSoilsList() {
-      const container = document.getElementById('soilsList');
-      container.innerHTML = '';
-
-      state.soils.forEach((soil, index) => {
-        const row = document.createElement('div');
-        row.className = 'list-item';
-
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.setAttribute('list', 'defaults-soil-ids');
-        input.className = 'soil-input';
-        input.placeholder = `soil ${index + 1}`;
-        input.value = soil;
-        input.addEventListener('input', rerender);
-
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'btn btn-remove';
-        removeBtn.textContent = 'Remove';
-        removeBtn.disabled = state.soils.length === 1;
-        removeBtn.addEventListener('click', () => {
-          state.soils.splice(index, 1);
-          if (state.soils.length === 0) state.soils.push('');
-          renderSoilsList();
-          rerender();
-        });
-
-        row.appendChild(input);
-        row.appendChild(removeBtn);
-        container.appendChild(row);
-      });
-    }
-
     function bindSimpleInputs() {
       const ids = [
-        'plant_id', 'item_id', 'block_id', 'block_size',
-        'half_ready_block_id', 'half_ready_block_size',
-        'ready_block_id', 'ready_block_size',
-        'condition', 'loot', 'version', 'forceAppend', 'growth-time-0', 'growth-time-1'
+        'soil_id', 'item_id', 'block_id', 'version', 'forceAppend'
       ];
 
       ids.forEach(id => {
@@ -896,20 +676,11 @@
     }
 
     function hydrateInputs() {
-      document.getElementById('plant_id').value = state.plant_id;
+      document.getElementById('soil_id').value = state.soil_id;
       document.getElementById('item_id').value = state.item_id;
       document.getElementById('block_id').value = state.block_id;
-      document.getElementById('block_size').value = state.block_size;
-      document.getElementById('half_ready_block_id').value = state.half_ready_block_id;
-      document.getElementById('half_ready_block_size').value = state.half_ready_block_size;
-      document.getElementById('ready_block_id').value = state.ready_block_id;
-      document.getElementById('ready_block_size').value = state.ready_block_size;
-      document.getElementById('condition').value = state.condition;
-      document.getElementById('loot').value = state.loot;
       document.getElementById('version').value = state.version;
       document.getElementById('forceAppend').checked = state.forceAppend;
-      document.getElementById('growth-time-0').value = state.gtime0;
-      document.getElementById('growth-time-1').value = state.gtime1;
     }
 
     async function copyOutput() {
@@ -928,17 +699,9 @@
       }
     }
 
-    document.getElementById('addSoilBtn').addEventListener('click', () => {
-      updateStateFromInputs();
-      state.soils.push('');
-      renderSoilsList();
-      rerender();
-    });
-
     document.getElementById('copyBtn').addEventListener('click', copyOutput);
 
     hydrateInputs();
-    renderSoilsList();
     bindSimpleInputs();
     rerender();
   </script>
